@@ -1,4 +1,4 @@
-# laptop-pricing
+![image](https://github.com/user-attachments/assets/69cf8e59-ab0e-4513-95bd-9e24d0ef735d)# laptop-pricing
 The dataset used for practice labs is a modified subset that maps the price of laptops with different attributes.
 The dataset is a filtered and modified version of the Laptop Price Prediction using specifications dataset, available under the Database Contents License (DbCL) v1.0 on the Kaggle website.
 
@@ -185,6 +185,50 @@ print(df_lt.head())
 ```
 df_lt.tosave(D:/Data anlysis- working sheet/python/data/laptop_price.csv)
 ```
+# Data Analysis
+
+#### Install Required Libraries
+```
+import piplite
+await piplite.install('seaborn')
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+%matplotlib inline
+```
+import csv file
+```
+df = pd.read_csv('D:/Data anlysis- working sheet/python/data/laptop_price.csv')
+```
+## Visualize individual feature patterns
+
+#### calculate the correlation between variables of type "int64" or "float64"
+```
+numeric_df = df.select_dtypes(include=['int64', 'float64'])
+numeric_df.corr(
+```
+![image](https://github.com/user-attachments/assets/01be9e9b-47ec-483b-aac3-d513a735875c)
+
+```
+mask = (corr_matrix < 0.7) & (corr_matrix > -0.7)
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f", linewidths=0.5, vmin=-1, vmax=1, mask=mask)
+
+plt.title("Highlighted Correlation Heatmap", fontsize=15)
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/c0f2c533-8ee9-4dd8-a035-ae83e0720016)
+
+In the heatmap, only RAM_GB (~0.55) has a clear correlation with Price. Other factors may not be prominent or not fully displayed in the image.
+For further inspection, I suggest drawing a scatter plot to see the visual relationship between Price and other variables
+
+
+
+
+
 
 
 
