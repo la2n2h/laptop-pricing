@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/69cf8e59-ab0e-4513-95bd-9e24d0ef735d)# laptop-pricing
+# laptop-pricing
 The dataset used for practice labs is a modified subset that maps the price of laptops with different attributes.
 The dataset is a filtered and modified version of the Laptop Price Prediction using specifications dataset, available under the Database Contents License (DbCL) v1.0 on the Kaggle website.
 
@@ -52,62 +52,63 @@ The weight of the laptop is in kgs.
 Price
 The price of the laptop is in USD.
 
-# Loading data
-### Load the dataset to a pandas dataframe named 'df'
+# DATA PREPARE
 ```
+# import libary packages
 import pandas as pd
 import numpy as np
-```
-```
+
+# read file
 file = "https://cf-courses-data.s3.us.cloud-object-storage.appdomain.cloud/IBMDeveloperSkillsNetwork-DA0101EN-Coursera/laptop_pricing_dataset_mod1.csv"
-```
-```
 df_lt = pd.read_csv(file)
+```
+# DATA PROCESS
+### data understanding
+```
+# check first few rows
 df_lt = head()
 ```
 ![image](https://github.com/user-attachments/assets/6f9f5a93-b256-40a9-92f8-b32f924cce95)
 
-print the data types of df columns
 ```
+# print the data types of df columns
 df_lt.dtypes
 ```
 ![image](https://github.com/user-attachments/assets/dfeb382d-2d7e-49fe-8992-55d876595c02)
 
-Print the statistical description of the dataset, including that of 'object' data types.¶
 ```
+# Print the statistical description of the dataset, including that of 'object' data types
 df_lt.describe(include ='all')
 ```
 ![image](https://github.com/user-attachments/assets/ae7f0fd3-9e82-41fd-a778-bd5a01216001)
 
-Print the summary information of the dataset.
 ```
+# Print the summary information of the dataset.
 df_lt.info()
 ```
 ![image](https://github.com/user-attachments/assets/213df84d-253b-4b4c-97c0-e8784281dea6)
 
-## Identify and handle missing values
+### Identify and handle missing values
 
-#### Evaluate the dataset for missing data
 ```
+# Evaluate the dataset for missing data
 missing_data = df_lt.isnull()
 print(missing_data.head())
 for column in missing_data.columns.values.tolist():
     print(column)
     print (missing_data[column].value_counts())
     print("")
-
 ```
 ![image](https://github.com/user-attachments/assets/1499346c-8e43-4ece-a9bd-b10e8c3903a8)
 
 Screen_Size_cm: 40 missing value, Weight_kg : 4 missing value
-
-Replace 'Weight_kg' missing values with mean
 ```
+# Replace 'Weight_kg' missing values with mean
 avg_weight_kg = df_lt['Weight_kg'].astype('float').mean()
 df_lt['Weight_kg'] = df_lt['Weight_kg'].fillna(avg_weight_kg)
 ```
-Replace with the most frequent value for Screen_Size_cm
 ```
+# Replace with the most frequent value for Screen_Size_cm
 df_lt['Screen_Size_cm'].value_counts()
 ```
 ![image](https://github.com/user-attachments/assets/098383f5-374a-4bfc-9582-0d6b97ae2927)
@@ -116,35 +117,35 @@ df_lt['Screen_Size_cm'].value_counts()
 df_lt['Screen_Size_cm']. fillna(39.624)
 ```
 
-## Data formating
-round up the values in Screen_Size_cm into 2 decimal places
+### Data formating
 ```
+# round up the values in Screen_Size_cm into 2 decimal places
 df_lt['Screen_Size_cm'] = np.round(df[['Screen_Size_cm']],2)
 df_lt.head()
 ```
 ![image](https://github.com/user-attachments/assets/55de107e-32d0-4099-aeb1-95b69794978f)
 
-change the column 'Unnamed: 0' into No.
 ```
+# change the column 'Unnamed: 0' into No.
 df_lt.rename(columns = {'Unnamed: 0': 'No'}, inplace = True)
 ```
+### Data Standardization
 
-## Data Standardization
-change the Screen_Size_cm in to inch and Weight_kg to pound
 ```
+#change the Screen_Size_cm in to inch and Weight_kg to pound
 df_lt['Screen_Size_inch') = 0.393700787*df_lt['Screen_Size_cm')
 df_lt['Weight_pound') = 2.20462262*df_lt['Weight_kg)
 ```
-
 ### Data Normalization
-Normalize the "CPU_frequency" attribute with respect to the maximum value available in the dataset.
 ```
+#Normalize the "CPU_frequency" attribute with respect to the maximum value available in the dataset.
 df_lt['CPU_frequency'] = df_lt['CPU_frequency'] /df_lt['CPU_frequency'] .max()
 ```
 
 ### Binning
-create 3 bins for the attribute "Price". These bins would be named "Low", "Medium" and "High"
+
 ```
+# create 3 bins for the attribute "Price". These bins would be named "Low", "Medium" and "High"
 bins_lt =np.linspace(min(df_lt['Price']), max(df_lt['Price']),4)
 bins_lt
 group_names = ['Low', 'Medium', 'High']
@@ -155,8 +156,8 @@ df_lt[['Price', 'price_binned']].head()
 
 ![image](https://github.com/user-attachments/assets/67eb59dc-13cd-4c8c-a019-6f1cd09c5db8)
 
- plot the bar graph of these bins.
  ```
+# plot the bar graph of these bins.
 %matplotlib inline
 import matplotlib as plt
 from matplotlib import pyplot
@@ -171,8 +172,9 @@ plt.pyplot.title("Price bins")
 ![image](https://github.com/user-attachments/assets/e6dfc4f1-4364-438e-ab6c-e71bd415d7c2)
 
 ### Indicator variables
-Convert the "Screen" attribute of the dataset into 2 indicator variables, "Screen-IPS_panel" and "Screen-Full_HD".
+
 ```
+# Convert the "Screen" attribute of the dataset into 2 indicator variables, "Screen-IPS_panel" and "Screen-Full_HD".
 dummy_variable_1 = pd.get_dummies(df_lt['Screen'])
 dummy_variable_1.head()
 df_lt = pd.concat([df_lt,dummy_variable_1], axis = 1)
@@ -180,9 +182,8 @@ print(df_lt.head())
 ```
 ![image](https://github.com/user-attachments/assets/de98bb37-b2cc-4d95-b26a-49d6e8fee8e4)
 
-
-## save data after clean
 ```
+# save data after clean
 df_lt.tosave(D:/Data anlysis- working sheet/python/data/laptop_price.csv)
 ```
 # Data Analysis
