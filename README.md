@@ -186,10 +186,10 @@ print(df_lt.head())
 # save data after clean
 df_lt.tosave(D:/Data anlysis- working sheet/python/data/laptop_price.csv)
 ```
-# Data Analysis
+# DATA ANALYSE
 
-#### Install Required Libraries
 ```
+# Install Required Libraries
 import piplite
 await piplite.install('seaborn')
 import numpy as np
@@ -198,21 +198,21 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 %matplotlib inline
-```
-import csv file
-```
+
+# import csv file
 df = pd.read_csv('D:/Data anlysis- working sheet/python/data/laptop_price.csv')
 ```
-## Visualize individual feature patterns
+###  Visualize individual feature patterns
 
-#### calculate the correlation between variables of type "int64" or "float64"
 ```
+# calculate the correlation between variables of type "int64" or "float64"
 numeric_df = df.select_dtypes(include=['int64', 'float64'])
 numeric_df.corr(
 ```
 ![image](https://github.com/user-attachments/assets/01be9e9b-47ec-483b-aac3-d513a735875c)
 
 ```
+# creates a heatmap to visualize the correlation matrix 
 mask = (corr_matrix < 0.7) & (corr_matrix > -0.7)
 
 plt.figure(figsize=(12, 8))
@@ -226,6 +226,7 @@ plt.show()
 In the heatmap, only RAM_GB (~0.55) has a clear correlation with Price. Other factors may not be prominent or not fully displayed in the image.
 
 ```
+# performs a regression plot analysis for multiple features against "Price" and calculates the correlation between them
 column_list = ['CPU_frequency', 'CPU_core', 'Storage_GB_SSD', 'RAM_GB']
 for column in column_list:
     sns.regplot(x=column, y="Price", data=df)
@@ -263,8 +264,8 @@ CPU cores also play a significant role, though the impact is slightly lower.
 CPU frequency has some effect but is not the strongest predictor.
 Storage has the weakest impact, meaning price is more influenced by other specifications.
 
-Generate Box plots for the different feature that hold categorical values. These features would be "Category", "GPU", "OS", "CPU_core", "RAM_GB", "Storage_GB_SSD"
 ```
+# Generate Box plots for the different feature that hold categorical values. These features would be "Category", "GPU", "OS", "CPU_core", "RAM_GB", "Storage_GB_SSD"
 feature_list = ["Category", "GPU", "OS", "CPU_core", "RAM_GB", "Storage_GB_SSD"]
 for column in feature_list:
     sns.boxplot(x=column, y="Price", data=df)
@@ -308,15 +309,16 @@ More advanced configurations generally result in higher prices, with significant
 
 ## Descriptive Statistical Analysis
 
-Generate the statistical description of all the features being used in the data set. Include "object" data types as well
+
 ```
+# Generate the statistical description of all the features being used in the data set. Include "object" data types as well
 print(df.describe())
 print(df.describe(include=['object']))
 ```
 ![image](https://github.com/user-attachments/assets/2f6af285-7a1a-4bdd-b2c9-a2732e40ebb1)
 
-GroupBy and Pivot Tables
 ```
+# GroupBy the price by 'GPU','CPU_core'
 df_gptest = df[['GPU','CPU_core','Price']]
 grouped_test1 = df_gptest.groupby(['GPU','CPU_core'],as_index=False).mean()
 print(grouped_test1)
@@ -324,12 +326,14 @@ print(grouped_test1)
 ![image](https://github.com/user-attachments/assets/071dbd9f-a402-45dd-bd6e-9480b8a03a1b)
 
 ```
+# pivot table 'price' between 'GPU','CPU_core'
 grouped_pivot = grouped_test1.pivot(index='GPU',columns='CPU_core')
 print(grouped_pivot)
 ```
 ![image](https://github.com/user-attachments/assets/5d8c5111-06bd-44d4-b53f-0c7ff41f7cd0)
 
 ```
+# creates a heatmap using pcolor to visualize a pivot table (grouped_pivot). 
 fig, ax = plt.subplots()
 im = ax.pcolor(grouped_pivot, cmap='RdBu')
 
@@ -356,9 +360,8 @@ Key Insights & Suggestions:
 
 Dependency Between GPU & CPU Cores: GPUs seem to perform better with more CPU cores.
 
-Use the scipy.stats.pearsonr() function to evaluate the Pearson Coefficient and the p-values for each parameter tested above. This will help to determine the parameters most likely to have a strong effect on the price of the laptops.
-
 ```
+# Use the scipy.stats.pearsonr() function to evaluate the Pearson Coefficient and the p-values for each parameter tested above. This will help to determine the parameters most likely to have a strong effect on the price of the laptops.
 for param in ['RAM_GB','CPU_frequency','Storage_GB_SSD','Weight_pound','CPU_core','OS','GPU','Category']:
     pearson_coef, p_value = stats.pearsonr(df[param], df['Price'])
     print(param)
