@@ -307,7 +307,7 @@ Key hardware specifications (GPU, CPU, RAM, Storage) strongly influence price tr
 Some categories show price outliers, possibly indicating premium models.
 More advanced configurations generally result in higher prices, with significant variation within each category.
 
-## Descriptive Statistical Analysis
+### Descriptive Statistical Analysis
 
 
 ```
