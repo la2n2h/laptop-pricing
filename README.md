@@ -369,10 +369,89 @@ for param in ['RAM_GB','CPU_frequency','Storage_GB_SSD','Weight_pound','CPU_core
 ```
 ![image](https://github.com/user-attachments/assets/62762ae1-d6d2-4246-a334-c81b19ba02ce)
 
+# MODEL DEVELOPMENT
+```
+# Importing Required Libraries
 
+import piplite
+await piplite.install('seaborn')
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import mean_squared_error, r2_score
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning) 
+%matplotlib inline
+```
+```
+# read csv file
+df = pd.read_csv('D:/Data anlysis- working sheet/python/data/laptop_price_1.csv')
+df.head(5)
+```
+![image](https://github.com/user-attachments/assets/9a042cc8-d4b9-4d05-9183-5d9a10552401)
 
+### create the model for prediction the pair of "CPU_frequency" and "Price"
+```
+# create Single Linear Regression between "CPU_frequency" and "Price"
+lm = LinearRegression()
 
+X = df[['CPU_frequency']]
+Y = df['Price']
+
+lm.fit(X,Y)
+
+Yhat=lm.predict(X)
+
+# Generate the Distribution plot for the predicted values and that of the actual values
+ax1 = sns.distplot(df['Price'], hist=False, color="r", label="Actual Value")
+
+# Create a distribution plot for predicted values
+sns.distplot(Yhat, hist=False, color="b", label="Fitted Values" , ax=ax1)
+
+plt.title('Actual vs Fitted Values for Price')
+plt.xlabel('Price')
+plt.ylabel('Proportion of laptops')
+plt.legend(['Actual Value', 'Predicted Value'])
+plt.show()
+```
+![image](https://github.com/user-attachments/assets/8f13774e-7bad-40a1-970f-f0d7168729c2)
+
+```
+# Evaluate the Mean Squared Error and R^2 score values for the model
+mse_slr = mean_squared_error(df['Price'], Yhat)
+r2_score_slr = lm.score(X, Y)
+print('The R-square for Linear Regression is: ', r2_score_slr)
+print('The mean square error of price and predicted value is: ', mse_slr)
+```
+![image](https://github.com/user-attachments/assets/9fa7f077-83de-4586-a2b6-ce97c58361bd)
+
+### create the model to predict 'price' base on 'CPU_frequency', 'RAM_GB', 'Storage_GB_SSD', 'CPU_core', 'OS', 'GPU' and 'Category'
+
+```
+# create Multiple Linear Regression
+lm1 = LinearRegression()
+
+Z = df[['CPU_frequency', 'RAM_GB', 'Storage_GB_SSD', 'CPU_core', 'OS', 'GPU', 'Category']]
+Y = df['Price']
+
+lm.fit(Z,Y)
+
+Yhat=lm1.predict(Z)
+
+# Plot the Distribution graph of the predicted values as well as the Actual values
+ax1 = sns.distplot(df['Price'], hist=False, color="r", label="Actual Value")
+sns.distplot(Y_hat, hist=False, color="b", label="Fitted Values" , ax=ax1)
+
+plt.title('Actual vs Fitted Values for Price')
+plt.xlabel('Price')
+plt.ylabel('Proportion of laptops')
+```
+![image](https://github.com/user-attachments/assets/aafb503b-0642-45fe-abcb-8a9f7cfc9479)
 
 
 
