@@ -546,14 +546,23 @@ print('The MSE value for 5th degree polynomial is: ', mean_squared_error(Y,p5(X)
 The 5th-degree model has a better fit than the linear model, but the data is widely scattered and does not closely follow the regression curve.
 CPU_frequency is not the main factor affecting laptop prices; 
 
+### Create a pipeline that performs parameter scaling, Polynomial Feature generation and Linear regression
+```
+3 create pipeline
+Input=[('scale',StandardScaler()), ('polynomial', PolynomialFeatures(include_bias=False)), ('model',LinearRegression())]
+pipe=Pipeline(Input)
+Z = Z.astype(float)
+pipe.fit(Z,Y)
+ypipe=pipe.predict(Z)
 
+# Evaluate the MSE and R^2 values for the this predicted output.
 
+print('MSE for multi-variable polynomial pipeline is: ', mean_squared_error(Y, ypipe))
+print('R^2 for multi-variable polynomial pipeline is: ', r2_score(Y, ypipe))
+```
+![image](https://github.com/user-attachments/assets/9e708a6d-092a-415f-b26d-b404f26f6d44)
 
-
-
-
-
-
+the values of R^2 increase as we go from Single Linear Regression to Multiple Linear Regression. Further, if we go for multiple linear regression extended with polynomial features, we get an even better R^2 value.
 
 
 
