@@ -453,6 +453,100 @@ plt.ylabel('Proportion of laptops')
 ```
 ![image](https://github.com/user-attachments/assets/aafb503b-0642-45fe-abcb-8a9f7cfc9479)
 
+```
+# Find the R^2 score and the MSE value for this fit. Is this better or worst than the performance of Single Linear Regression?
+mse_slr1 = mean_squared_error(df['Price'], Y_hat)
+r2_score_slr = lm1.score(Z, Y)
+print('The R-square for Linear Regression is: ', r2_score_slr)
+print('The mean square error of price and predicted value is: ', mse_slr1)
+```
+![image](https://github.com/user-attachments/assets/a29e53f2-6a34-4f24-901e-154cdc73fc49)
+
+Based on the metrics between SLR và MLR
+
+R-square (R²)
+
+SLR model: 0.1344 (13.44%)
+MLR model: 0.5083 (50.83%)
+R² represents how well the model explains the variance of the target variable. The MLR model has a higher R² (50.83%), meaning it explains more of the data's variability compared to the SLR model (only 13.44%). This indicates that the MLR  model fits the data better.
+
+Mean Square Error (MSE)
+
+SLR model: 284,583.44
+MLR model: 161,680.57
+MSE measures the average squared difference between actual and predicted values. A lower MSE is better because it indicates more accurate predictions. The MLR model has a significantly lower MSE (161,680.57 vs. 284,583.44), meaning its prediction errors are smaller.
+
+Conclusion
+The MLR model is clearly better than the SLR one since it has a higher R² and lower MSE.
+
+### create the model for prediction the pair of "CPU_frequency" and "Price" by Polinomial Regression
+```
+# create SLR for "CPU_frequency"
+X = X.to_numpy().flatten() # convert "CPU_frequency" from data frame to numpy ensure '' is 1D not 2D
+f1 = np.polyfit(X, Y, 1)
+p1 = np.poly1d(f1)
+
+f3 = np.polyfit(X, Y, 3)
+p3 = np.poly1d(f3)
+
+f5 = np.polyfit(X, Y, 5)
+p5 = np.poly1d(f5)
+
+
+# create polynomial model regression in order to check if the data can fit better
+# create funtion to plot the data
+
+def Plotpoly(model, independent_variable, dependent_variable, Name):
+    x_new = np.linspace(15, 55, 100)
+    y_new = model(x_new)
+
+    plt.plot(independent_variable, dependent_variable, '.', x_new, y_new, '-')
+    plt.title('Polynomial Fit for Price ~ {Name}')
+    x = plt.gca()
+   `ax.set_facecolor((0.898, 0.898, 0.898))
+    fig = plt.gcf()
+    plt.xlabel(Name)
+    plt.ylabel('Price of laptops')
+
+    plt.show()
+    plt.close()
+```
+```
+# call for function of degree 1
+PlotPolly(p1, X, Y, 'CPU_frequency')
+```
+![image](https://github.com/user-attachments/assets/c68a5c0c-35db-40ee-91da-f46ec114756c)
+
+```
+# call for function of degree 3
+PlotPolly(p3, X, Y, 'CPU_frequency')
+```
+![image](https://github.com/user-attachments/assets/0ab12749-6f48-469e-8244-78ef89071e40)
+
+```
+# call for function of degree 5
+PlotPolly(p5, X, Y, 'CPU_frequency')
+```
+![image](https://github.com/user-attachments/assets/d3534c49-3aba-4d54-bf10-dbbaa015cc20)
+
+```
+# calculate the R^2 and MSE values for these fits
+r_squared_1 = r2_score(Y, p1(X))
+print('The R-square value for 1st degree polynomial is: ', r_squared_1)
+print('The MSE value for 1st degree polynomial is: ', mean_squared_error(Y,p1(X)))
+r_squared_3 = r2_score(Y, p3(X))
+print('The R-square value for 3rd degree polynomial is: ', r_squared_3)
+print('The MSE value for 3rd degree polynomial is: ', mean_squared_error(Y,p3(X)))
+r_squared_5 = r2_score(Y, p5(X))
+print('The R-square value for 5th degree polynomial is: ', r_squared_5)
+print('The MSE value for 5th degree polynomial is: ', mean_squared_error(Y,p5(X)))
+```
+![image](https://github.com/user-attachments/assets/5e0ceb5d-8e3b-4da0-b674-bb5359b9fcbc)
+
+The 5th-degree model has a better fit than the linear model, but the data is widely scattered and does not closely follow the regression curve.
+CPU_frequency is not the main factor affecting laptop prices; 
+
+
 
 
 
